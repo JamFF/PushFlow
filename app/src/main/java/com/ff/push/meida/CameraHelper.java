@@ -7,13 +7,14 @@ import android.util.Log;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 
+import java.lang.ref.WeakReference;
 import java.util.Iterator;
 import java.util.List;
 
 public class CameraHelper implements SurfaceHolder.Callback, Camera.PreviewCallback {
 
     private static final String TAG = "CameraHelper";
-    private Activity mActivity;
+    private WeakReference<Activity> mWeakReference;
     private int mHeight;
     private int mWidth;
     private int mCameraId;
@@ -23,10 +24,10 @@ public class CameraHelper implements SurfaceHolder.Callback, Camera.PreviewCallb
     private Camera.PreviewCallback mPreviewCallback;
     private int mRotation;
     private OnChangedSizeListener mOnChangedSizeListener;
-    byte[] bytes;
+    private byte[] bytes;
 
     public CameraHelper(Activity activity, int cameraId, int width, int height) {
-        mActivity = activity;
+        mWeakReference = new WeakReference<>(activity);
         mCameraId = cameraId;
         mWidth = width;
         mHeight = height;
@@ -51,11 +52,11 @@ public class CameraHelper implements SurfaceHolder.Callback, Camera.PreviewCallb
 
     private void stopPreview() {
         if (mCamera != null) {
-            //预览数据回调接口
+            // 预览数据回调接口
             mCamera.setPreviewCallback(null);
-            //停止预览
+            // 停止预览
             mCamera.stopPreview();
-            //释放摄像头
+            // 释放摄像头
             mCamera.release();
             mCamera = null;
         }
@@ -90,7 +91,10 @@ public class CameraHelper implements SurfaceHolder.Callback, Camera.PreviewCallb
     private void setPreviewOrientation(Camera.Parameters parameters) {
         Camera.CameraInfo info = new Camera.CameraInfo();
         Camera.getCameraInfo(mCameraId, info);
-        mRotation = mActivity.getWindowManager().getDefaultDisplay().getRotation();
+        if (mWeakReference == null || mWeakReference.get() == null) {
+            return;
+        }
+        mRotation = mWeakReference.get().getWindowManager().getDefaultDisplay().getRotation();
         int degrees = 0;
         switch (mRotation) {
             case Surface.ROTATION_0:

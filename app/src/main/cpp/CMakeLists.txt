@@ -6,7 +6,7 @@
 cmake_minimum_required(VERSION 3.4.1)
 
 # 设置头文件目录，C文件中include时不需要带路径了
-include_directories(${CMAKE_SOURCE_DIR}/x264)
+include_directories(${CMAKE_SOURCE_DIR}/include)
 
 # 添加子目录：librtmp路径
 add_subdirectory(librtmp)
@@ -24,7 +24,8 @@ add_library( # Sets the name of the library.
 
         # Provides a relative path to your source file(s).
         native-lib.cpp
-        VideoChannel.cpp)
+        VideoChannel.cpp
+        AudioChannel.cpp)
 
 # 设置一个变量ABI_DIR，指向需要使用的第三方库的路径
 set(ABI_DIR ${CMAKE_SOURCE_DIR}/../jniLibs/${CMAKE_ANDROID_ARCH_ABI})
@@ -53,6 +54,7 @@ target_link_libraries( # Specifies the target library.
         native-lib
         rtmp
         x264
+        faac
         # Links the target library to the log library
         # included in the NDK.
         ${log-lib})
