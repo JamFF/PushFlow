@@ -143,6 +143,10 @@ Java_com_ff_push_LivePusher_native_1start(JNIEnv *env, jobject instance, jstring
     char *url = new char[strlen(path) + 1];
     strcpy(url, path);
 
+    // 参数1：线程id，pthread_t型指针
+    // 参数2：线程的属性，nullptr默认属性
+    // 参数3：线程创建之后执行的函数，函数指针，可以写&start，由于函数名就是函数指针，所以可以省略&
+    // 参数4：start函数接受的参数，void型指针
     pthread_create(&pid, nullptr, start, url);
 
     env->ReleaseStringUTFChars(path_, path);
