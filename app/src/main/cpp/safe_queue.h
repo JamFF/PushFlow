@@ -2,8 +2,8 @@
 // Created by FF on 2019-06-16.
 //
 
-#ifndef DNRECORDER_SAFE_QUEUE_H
-#define DNRECORDER_SAFE_QUEUE_H
+#ifndef PUSHFLOW_SAFE_QUEUE_H
+#define PUSHFLOW_SAFE_QUEUE_H
 
 #include <queue>
 #include <pthread.h>
@@ -91,4 +91,4 @@ private:
 };
 
 
-#endif //DNRECORDER_SAFE_QUEUE_H
+#endif //PUSHFLOW_SAFE_QUEUE_H
